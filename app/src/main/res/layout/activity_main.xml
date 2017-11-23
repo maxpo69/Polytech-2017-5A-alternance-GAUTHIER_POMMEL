@@ -4,15 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.epulapp.applicationmobile.MainActivity">
+    tools:context="com.example.epulapp.applicationmobiletp.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/offline"
+                android:textSize="@dimen/font_size_big"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/oneVsIA"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_size_big"
+                    android:layout_weight="1"
+                    android:text="@string/onevsIA"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/oneVsone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_size_big"
+                    android:layout_weight="1"
+                    android:text="@string/onevs1"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/teamAVsTeamB"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size_big"
+                android:text="@string/teamAvsTeamB"
+                android:textAllCaps="false" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/online"
+                android:textSize="@dimen/font_size_big"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/oneVsoneOnline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_size_big"
+                android:text="@string/onevs1online"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
