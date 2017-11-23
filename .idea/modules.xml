@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Polytech-2017-5A-alternance-GAUTHIER_POMMEL.iml" filepath="$PROJECT_DIR$/Polytech-2017-5A-alternance-GAUTHIER_POMMEL.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Polytech\S9\Application mobile\Polytech-2017-5A-alternance-GAUTHIER_POMMEL\app\app.iml" filepath="D:\Polytech\S9\Application mobile\Polytech-2017-5A-alternance-GAUTHIER_POMMEL\app\app.iml" />
     </modules>
   </component>
 </project>
