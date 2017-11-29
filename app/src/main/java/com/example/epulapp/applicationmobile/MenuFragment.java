@@ -4,9 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.io.Console;
 
 
 /**
@@ -17,7 +21,7 @@ import android.view.ViewGroup;
  * Use the {@link MenuFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MenuFragment extends Fragment {
+public class MenuFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,23 +63,17 @@ public class MenuFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        View view =  inflater.inflate(R.layout.fragment_menu, container, false);
+        Button button = (Button) view.findViewById(R.id.oneVsIA);
+        button.setOnClickListener(this);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        return view;
 
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -95,6 +93,18 @@ public class MenuFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch(id){
+            case R.id.oneVsIA:
+                mListener.onFragmentInteraction(id);
+                Log.d("click","bouton onevsIA");
+                break;
+        }
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -107,6 +117,6 @@ public class MenuFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(int id);
     }
 }
