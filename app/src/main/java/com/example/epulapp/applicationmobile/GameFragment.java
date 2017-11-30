@@ -58,7 +58,10 @@ public class GameFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
+        Intent intent = new Intent();
+        intent.setAction("com.example.broadcast.MY_NOTIFICATION");
+        // intent.putExtra("data","Notice me senpai!");
+        this.getActivity().sendBroadcast(intent);
 
     }
 
