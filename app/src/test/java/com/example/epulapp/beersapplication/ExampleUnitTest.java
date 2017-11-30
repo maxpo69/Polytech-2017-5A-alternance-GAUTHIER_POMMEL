@@ -1,4 +1,4 @@
-package com.example.epulapp.applicationmobile;
+package com.example.epulapp.beersapplication;
 
 import org.junit.Test;
 
