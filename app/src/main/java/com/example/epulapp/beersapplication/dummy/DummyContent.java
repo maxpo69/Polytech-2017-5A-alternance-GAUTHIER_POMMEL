@@ -28,7 +28,7 @@ public class DummyContent {
     static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i, "Bière"+id, "Description de la bière", "https://images.punkapi.com/v2/192.png", 6));
+            addItem(createDummyItem(i, "Bière "+i, "Description de la bière", "https://images.punkapi.com/v2/192.png", 6));
         }
     }
 
