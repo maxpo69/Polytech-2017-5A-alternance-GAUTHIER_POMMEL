@@ -1,9 +1,13 @@
 package com.example.epulapp.applicationmobile;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +53,16 @@ public class GameFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Intent intent = new Intent();
+        intent.setAction("com.example.broadcast.MY_NOTIFICATION");
+        // intent.putExtra("data","Notice me senpai!");
+        this.getActivity().sendBroadcast(intent);
+
     }
 
     @Override
