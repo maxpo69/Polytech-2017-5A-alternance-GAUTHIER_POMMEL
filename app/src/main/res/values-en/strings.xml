@@ -1,14 +1,4 @@
 <resources>
-    <string name="app_name">ZeQuizz</string>
-    <string name="offline">Offline :</string>
-    <string name="online">Online :</string>
-    <string name="onevs1">1 vs 1</string>
-    <string name="onevsIA">1 vs IA</string>
-    <string name="teamAvsTeamB">Team A vs Team B</string>
-    <string name="onevs1online">1 vs 1 Online</string>
-    <string name="team">Team :</string>
-    <string name="life">Life :</string>
-    <string name="score">Score :</string>
-    <string name="player">Player :</string>
-    <string name="value">Value :</string>
+    <string name="app_name">Beers Application</string>
+    <string name="title_beer_detail">Beer Detail</string>
 </resources>
