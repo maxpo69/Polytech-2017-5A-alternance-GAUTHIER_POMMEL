@@ -1,5 +1,6 @@
 package com.example.epulapp.applicationmobile;
 
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,13 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.OnFr
                 .beginTransaction()
                 .add(R.id.mainFragment,fragment)
                 .commit();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.example.broadcast.MY_NOTIFICATION");
+
+        MyReceiver receiver =  new MyReceiver();
+        registerReceiver(receiver,filter);
+
     }
 
     @Override
