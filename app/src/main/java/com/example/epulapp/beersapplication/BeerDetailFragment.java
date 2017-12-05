@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.epulapp.beersapplication.Model.Beer;
 import com.example.epulapp.beersapplication.dummy.DummyContent;
 
 /**
@@ -27,7 +28,7 @@ public class BeerDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Beer mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,7 +50,7 @@ public class BeerDetailFragment extends Fragment {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.name);
+                appBarLayout.setTitle(mItem.getName());
             }
         }
     }
@@ -61,7 +62,7 @@ public class BeerDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.beer_detail)).setText(mItem.description);
+            ((TextView) rootView.findViewById(R.id.beer_detail)).setText(mItem.getDescription());
         }
 
         return rootView;

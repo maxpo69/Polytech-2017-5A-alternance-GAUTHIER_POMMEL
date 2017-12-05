@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.example.epulapp.beersapplication.Model.Beer;
 import com.example.epulapp.beersapplication.dummy.DummyContent;
 
 import java.util.List;
@@ -66,15 +67,15 @@ public class BeerListActivity extends AppCompatActivity {
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final BeerListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Beer> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                Beer item = (Beer) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(BeerDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putString(BeerDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
                     BeerDetailFragment fragment = new BeerDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -83,7 +84,7 @@ public class BeerListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BeerDetailActivity.class);
-                    intent.putExtra(BeerDetailFragment.ARG_ITEM_ID, item.id);
+                    intent.putExtra(BeerDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
 
                     context.startActivity(intent);
                 }
@@ -91,7 +92,7 @@ public class BeerListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(BeerListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<Beer> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -108,8 +109,8 @@ public class BeerListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
           //  holder.mImageView.setSou
-            holder.mNameView.setText(mValues.get(position).name);
-            holder.mDegreView.setText("Alc. "+mValues.get(position).abv +"%");
+            holder.mNameView.setText(mValues.get(position).getName());
+            holder.mDegreView.setText("Alc. "+mValues.get(position).getAbv() +"%");
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
