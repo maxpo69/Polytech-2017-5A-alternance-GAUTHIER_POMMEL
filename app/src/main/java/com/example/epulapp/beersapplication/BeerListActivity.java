@@ -9,17 +9,28 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import com.example.epulapp.beersapplication.Model.Beer;
 import com.example.epulapp.beersapplication.dummy.DummyContent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * An activity representing a list of Beers. This activity
@@ -30,6 +41,9 @@ import java.util.List;
  * item details side-by-side using two vertical panes.
  */
 public class BeerListActivity extends AppCompatActivity {
+
+
+    private static final String BASE_URL = "https://api.punkapi.com/v2/";
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -53,10 +67,53 @@ public class BeerListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+        if(!DummyContent.LOADED){
+            Retrofit retrofit= new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        View recyclerView = findViewById(R.id.beer_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+            BiereAPI beerAPI = retrofit.create(BiereAPI.class);
+            Call<ArrayList<Beer>> call = beerAPI.getBeers();
+
+            call.enqueue(new Callback<ArrayList<Beer>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Beer>> call, Response<ArrayList<Beer>> response) {
+                    Log.d("response : ",response.toString());
+                    try {
+                        ArrayList<Beer> beers = response.body();
+                        // Add some sample items.
+                        for (Beer biere: beers) {
+                            Log.d("Biere : ",biere.toString());
+                            DummyContent.ITEMS.add(biere);
+                            DummyContent.ITEM_MAP.put(String.valueOf(biere.getId()), biere);
+                        }
+                        ProgressBar loading = findViewById(R.id.loading);
+                        loading.setVisibility(View.INVISIBLE);
+                        View recyclerView = findViewById(R.id.beer_list);
+                        assert recyclerView != null;
+                        setupRecyclerView((RecyclerView) recyclerView);
+                        DummyContent.LOADED = true;
+                    } catch (Error e){
+                        Log.e("E : ","error "+e);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Beer>> call, Throwable t) {
+                    Log.e("E : ","error "+t.getMessage());
+                }
+            });
+        }
+        else{
+            ProgressBar loading = findViewById(R.id.loading);
+            loading.setVisibility(View.INVISIBLE);
+            View recyclerView = findViewById(R.id.beer_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
+        }
+
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

@@ -20,7 +20,10 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
