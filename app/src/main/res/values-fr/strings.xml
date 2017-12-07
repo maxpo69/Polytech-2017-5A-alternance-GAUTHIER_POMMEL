@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Application Bières</string>
+    <string name="app_name">Bières !</string>
     <string name="title_beer_detail">Détail de la bière</string>
     <string name="foodpairing">Accompagnements :</string>
 </resources>
