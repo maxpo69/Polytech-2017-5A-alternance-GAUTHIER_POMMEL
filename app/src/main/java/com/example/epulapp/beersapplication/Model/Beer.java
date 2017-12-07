@@ -1,5 +1,7 @@
 package com.example.epulapp.beersapplication.Model;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -33,6 +35,16 @@ public class Beer {
     @SerializedName("food_pairing")
     @Expose
     private String[] food_pairing;
+
+    private Bitmap img = null;
+
+    public Bitmap getImg() {
+        return img;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
+    }
 
     public int getId() {
         return id;

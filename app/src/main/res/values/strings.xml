@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Beers Application</string>
+    <string name="app_name">Beers !</string>
     <string name="title_beer_detail">Beer Detail</string>
+    <string name="foodpairing">Food Pairing : </string>
 </resources>

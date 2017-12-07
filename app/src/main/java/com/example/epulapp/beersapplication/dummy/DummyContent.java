@@ -1,5 +1,6 @@
 package com.example.epulapp.beersapplication.dummy;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.epulapp.beersapplication.BiereAPI;

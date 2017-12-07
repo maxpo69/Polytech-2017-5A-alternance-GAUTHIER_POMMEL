@@ -1,7 +1,12 @@
 package com.example.epulapp.beersapplication;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +26,12 @@ import android.widget.TextView;
 import com.example.epulapp.beersapplication.Model.Beer;
 import com.example.epulapp.beersapplication.dummy.DummyContent;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,12 +95,15 @@ public class BeerListActivity extends AppCompatActivity {
                         ArrayList<Beer> beers = response.body();
                         // Add some sample items.
                         for (Beer biere: beers) {
-                            Log.d("Biere : ",biere.toString());
+                            Log.d("Biere : ", biere.toString());
                             DummyContent.ITEMS.add(biere);
                             DummyContent.ITEM_MAP.put(String.valueOf(biere.getId()), biere);
+                            new DownloadImage(biere).execute(biere.getImage_url());
                         }
+
                         ProgressBar loading = findViewById(R.id.loading);
                         loading.setVisibility(View.INVISIBLE);
+
                         View recyclerView = findViewById(R.id.beer_list);
                         assert recyclerView != null;
                         setupRecyclerView((RecyclerView) recyclerView);
@@ -120,7 +134,7 @@ public class BeerListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
+    public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final BeerListActivity mParentActivity;
@@ -170,6 +184,11 @@ public class BeerListActivity extends AppCompatActivity {
             holder.mDegreView.setText("Alc. "+mValues.get(position).getAbv() +"%");
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+
+
+            holder.mImageView.setImageBitmap(mValues.get(position).getImg());
+
+
         }
 
         @Override
@@ -178,16 +197,16 @@ public class BeerListActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final ImageView mImageView;
             final TextView mNameView;
             final TextView mDegreView;
-
+            final ImageView mImageView;
             ViewHolder(View view) {
                 super(view);
-                mImageView = (ImageView) view.findViewById(R.id.image_url);
+                mImageView = (ImageView) view.findViewById(R.id.image);
                 mNameView = (TextView) view.findViewById(R.id.name);
                 mDegreView = (TextView) view.findViewById(R.id.degre);
             }
         }
     }
+
 }
