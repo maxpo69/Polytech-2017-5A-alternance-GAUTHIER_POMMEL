@@ -1,19 +1,12 @@
 package com.example.epulapp.beersapplication;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,19 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.example.epulapp.beersapplication.Interface.OnPreTaskExecute;
+import com.example.epulapp.beersapplication.Interface.OnTaskCompleted;
 import com.example.epulapp.beersapplication.Model.Beer;
 import com.example.epulapp.beersapplication.dummy.DummyContent;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,15 +85,15 @@ public class BeerListActivity extends AppCompatActivity {
                             Log.d("Biere : ", biere.toString());
                             DummyContent.ITEMS.add(biere);
                             DummyContent.ITEM_MAP.put(String.valueOf(biere.getId()), biere);
-                            new DownloadImage(biere).execute(biere.getImage_url());
+
                         }
 
                         ProgressBar loading = findViewById(R.id.loading);
                         loading.setVisibility(View.INVISIBLE);
-
                         View recyclerView = findViewById(R.id.beer_list);
                         assert recyclerView != null;
                         setupRecyclerView((RecyclerView) recyclerView);
+
                         DummyContent.LOADED = true;
                     } catch (Error e){
                         Log.e("E : ","error "+e);
@@ -133,6 +120,7 @@ public class BeerListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
+
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -178,15 +166,44 @@ public class BeerListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-          //  holder.mImageView.setSou
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            //  holder.mImageView.setSou
             holder.mNameView.setText(mValues.get(position).getName());
             holder.mDegreView.setText("Alc. "+mValues.get(position).getAbv() +"%");
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+            if(mValues.get(position).getImg()!=null){
+                holder.mLoadImageView.setVisibility(View.INVISIBLE);
+                holder.mImageView.setVisibility(View.VISIBLE);
+                holder.mImageView.setImageBitmap(mValues.get(position).getImg());
+            }
+            else{
+                if(!mValues.get(position).getDownloadStarted()){
+                    DownloadImage di = new DownloadImage(new OnPreTaskExecute(){
+                        @Override
+                        public void onPreTaskExecute() {
+                            mValues.get(position).setDownloadStarted(true);
+                            holder.mImageView.setVisibility(View.INVISIBLE);
+                            holder.mLoadImageView.setVisibility(View.VISIBLE);
+                        }
+                    },new OnTaskCompleted(){
 
+                        @Override
+                        public void onTaskCompleted() {
+                            holder.mLoadImageView.setVisibility(View.GONE);
+                            holder.mImageView.setVisibility(View.VISIBLE);
+                            holder.mImageView.setImageBitmap(mValues.get(position).getImg());
+                        }
+                    }, mValues.get(position));
 
-            holder.mImageView.setImageBitmap(mValues.get(position).getImg());
+                    di.execute(mValues.get(position).getImage_url());
+                }
+                else{
+                    holder.mLoadImageView.setVisibility(View.VISIBLE);
+                    holder.mImageView.setVisibility(View.INVISIBLE);
+                }
+            }
+
 
 
         }
@@ -200,11 +217,13 @@ public class BeerListActivity extends AppCompatActivity {
             final TextView mNameView;
             final TextView mDegreView;
             final ImageView mImageView;
+            final ProgressBar mLoadImageView;
             ViewHolder(View view) {
                 super(view);
                 mImageView = (ImageView) view.findViewById(R.id.image);
                 mNameView = (TextView) view.findViewById(R.id.name);
                 mDegreView = (TextView) view.findViewById(R.id.degre);
+                mLoadImageView = (ProgressBar) view.findViewById(R.id.loadImg);
             }
         }
     }

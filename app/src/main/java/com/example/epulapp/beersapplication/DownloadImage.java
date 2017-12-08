@@ -3,9 +3,9 @@ package com.example.epulapp.beersapplication;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
+import com.example.epulapp.beersapplication.Interface.OnPreTaskExecute;
+import com.example.epulapp.beersapplication.Interface.OnTaskCompleted;
 import com.example.epulapp.beersapplication.Model.Beer;
 
 import java.io.InputStream;
@@ -16,14 +16,18 @@ import java.io.InputStream;
 
 // DownloadImage AsyncTask
 class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-
+    private OnPreTaskExecute preTask;
+    private OnTaskCompleted listener;
     private Beer beer;
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        this.preTask.onPreTaskExecute();
     }
 
-    public DownloadImage(Beer beer){
+    public DownloadImage(OnPreTaskExecute preTask, OnTaskCompleted listener , Beer beer){
+        this.preTask = preTask;
+        this.listener = listener;
         this.beer = beer;
     }
     @Override
@@ -47,6 +51,6 @@ class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         // Set the bitmap into ImageView
         this.beer.setImg(result);
-
+        this.listener.onTaskCompleted();
     }
 }
