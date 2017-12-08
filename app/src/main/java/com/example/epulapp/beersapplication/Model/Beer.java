@@ -38,6 +38,16 @@ public class Beer {
 
     private Bitmap img = null;
 
+    private Boolean downloadStarted = false;
+
+    public Boolean getDownloadStarted() {
+        return downloadStarted;
+    }
+
+    public void setDownloadStarted(Boolean downloadStarted) {
+        this.downloadStarted = downloadStarted;
+    }
+
     public Bitmap getImg() {
         return img;
     }
